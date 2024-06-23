@@ -111,7 +111,6 @@
 // ######################## END OF TEMPERATURE ###############################
 
 
-
 // ############################### MOTOR CONTROL #########################
 /* GENERAL NOTES:
  * 1. The parameters here are over-writing the default motor parameters. For all the available parameters check BLDC_controller_data.c
