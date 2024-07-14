@@ -499,10 +499,10 @@
 #ifdef VARIANT_HOVERCAR
   #define FLASH_WRITE_KEY         0x1107  // Flash memory writing key. Change this key to ignore the input calibrations from the flash memory and use the ones in config.h
   #undef  CTRL_MOD_REQ
-  #define CTRL_MOD_REQ            TRQ_MODE  // HOVERCAR works best in TORQUE Mode. VOLTAGE mode is preffered when freewheeling is not desired when throttle is released.
+  #define CTRL_MOD_REQ            TRQ_MODE // VLT_MODE  // HOVERCAR works best in TORQUE Mode. VOLTAGE mode is preffered when freewheeling is not desired when throttle is released.
   #define CONTROL_ADC             0         // use ADC as input. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART2, FEEDBACK_SERIAL_USART2, DEBUG_SERIAL_USART2!
   //#define SIDEBOARD_SERIAL_USART3 1         // Rx from right sensor board: to use photosensors as buttons. Number indicates priority for dual-input. Comment-out if sideboard is not used!
-  //#define FEEDBACK_SERIAL_USART3            // Tx to   right sensor board: for LED battery indication. Comment-out if sideboard is not used!
+  #define FEEDBACK_SERIAL_USART3            // Tx to   right sensor board: for LED battery indication. Comment-out if sideboard is not used!
 
   #define DUAL_INPUTS                       // ADC*(Primary) + Sideboard_R(Auxiliary). Uncomment this to use Dual-inputs
   #define PRI_INPUT1              1,  1000, 0, 2500, 0  // Pedal Brake        TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
@@ -515,7 +515,7 @@
   // #define ADC_ALTERNATE_CONNECT             // use to swap ADC inputs
   // #define INVERT_R_DIRECTION                // Invert rotation of right motor
   // #define INVERT_L_DIRECTION                // Invert rotation of left motor
-  #define DEBUG_SERIAL_USART3               // right sensor board cable, disable if I2C (nunchuk or lcd) is used!
+  //#define DEBUG_SERIAL_USART3               // right sensor board cable, disable if I2C (nunchuk or lcd) is used!
 
   // Extra functionality
   // #define CRUISE_CONTROL_SUPPORT            // [-] Flag to enable Cruise Control support. Activation/Deactivation is done by sideboard button or Brake pedal press.
@@ -527,10 +527,14 @@
   #define MULTI_MODE_DRIVE                  // This option enables the selection of 3 driving modes at start-up using combinations of Brake and Throttle pedals (see below)
   #ifdef MULTI_MODE_DRIVE
       // BEGINNER MODE:     Power ON + Brake [released] + Throttle [released or pressed]
-      #define MULTI_MODE_DRIVE_M1_MAX   175
-      #define MULTI_MODE_DRIVE_M1_RATE  250
-      #define MULTI_MODE_M1_I_MOT_MAX   4
-      #define MULTI_MODE_M1_N_MOT_MAX   30
+      //#define MULTI_MODE_DRIVE_M1_MAX   175
+      //#define MULTI_MODE_DRIVE_M1_RATE  250
+      //#define MULTI_MODE_M1_I_MOT_MAX   4
+      //#define MULTI_MODE_M1_N_MOT_MAX   30
+      #define MULTI_MODE_DRIVE_M2_MAX   500  // INTERMEDIATE sam prekopirao, jer ovaj BEGINNER ne radi nikako...
+      #define MULTI_MODE_DRIVE_M2_RATE  300
+      #define MULTI_MODE_M2_I_MOT_MAX   8
+      #define MULTI_MODE_M2_N_MOT_MAX   80
 
       // INTERMEDIATE MODE: Power ON + Brake [pressed] + Throttle [released]
       #define MULTI_MODE_DRIVE_M2_MAX   500
