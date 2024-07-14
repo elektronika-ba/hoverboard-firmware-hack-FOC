@@ -531,10 +531,10 @@
       //#define MULTI_MODE_DRIVE_M1_RATE  250
       //#define MULTI_MODE_M1_I_MOT_MAX   4
       //#define MULTI_MODE_M1_N_MOT_MAX   30
-      #define MULTI_MODE_DRIVE_M2_MAX   500  // INTERMEDIATE sam prekopirao, jer ovaj BEGINNER ne radi nikako...
-      #define MULTI_MODE_DRIVE_M2_RATE  300
-      #define MULTI_MODE_M2_I_MOT_MAX   8
-      #define MULTI_MODE_M2_N_MOT_MAX   80
+      #define MULTI_MODE_DRIVE_M1_MAX   500  // INTERMEDIATE sam prekopirao, jer ovaj BEGINNER ne radi nikako...
+      #define MULTI_MODE_DRIVE_M1_RATE  300
+      #define MULTI_MODE_M1_I_MOT_MAX   8
+      #define MULTI_MODE_M1_N_MOT_MAX   80
 
       // INTERMEDIATE MODE: Power ON + Brake [pressed] + Throttle [released]
       #define MULTI_MODE_DRIVE_M2_MAX   500
