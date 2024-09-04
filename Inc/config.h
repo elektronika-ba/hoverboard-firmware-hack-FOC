@@ -504,6 +504,14 @@
   #define SIDEBOARD_SERIAL_USART3 1         // Rx from right sensor board: to use photosensors as buttons. Number indicates priority for dual-input. Comment-out if sideboard is not used!
   #define FEEDBACK_SERIAL_USART3            // Tx to   right sensor board: for LED battery indication. Comment-out if sideboard is not used!
 
+  // Ako nema sideboard inpute, onda po defaultu idi na Torque mode, i FieldWeakening enable
+  #if defined SIDEBOARD_SERIAL_USART3 && SIDEBOARD_SERIAL_USART3 == 0
+    #undef  CTRL_MOD_REQ
+    #define CTRL_MOD_REQ            TRQ_MODE
+    #undef  FIELD_WEAK_ENA
+    #define FIELD_WEAK_ENA  1
+  #endif
+
   #define DUAL_INPUTS                       // ADC*(Primary) + Sideboard_R(Auxiliary). Uncomment this to use Dual-inputs
   #define PRI_INPUT1              1,  1000, 0, 2500, 0  // Pedal Brake        TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
   #define PRI_INPUT2              1,   500, 0, 2200, 0  // Pedal Accel        TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
@@ -530,13 +538,13 @@
       #define MULTI_MODE_DRIVE_M1_MAX   500 // ADJUSTED
       #define MULTI_MODE_DRIVE_M1_RATE  300
       #define MULTI_MODE_M1_I_MOT_MAX   8
-      #define MULTI_MODE_M1_N_MOT_MAX   150
+      #define MULTI_MODE_M1_N_MOT_MAX   170
 
       // INTERMEDIATE MODE: Power ON + Brake [pressed] + Throttle [released]
       #define MULTI_MODE_DRIVE_M2_MAX   750 // ADJUSTED
       #define MULTI_MODE_DRIVE_M2_RATE  350
       #define MULTI_MODE_M2_I_MOT_MAX   10
-      #define MULTI_MODE_M2_N_MOT_MAX   N_MOT_MAX/2
+      #define MULTI_MODE_M2_N_MOT_MAX   (N_MOT_MAX/3)
 
       // ADVANCED MODE:    Power ON + Brake [pressed] + Throttle [pressed]
       #define MULTI_MODE_DRIVE_M3_MAX   1000
