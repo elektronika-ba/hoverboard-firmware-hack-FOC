@@ -501,8 +501,8 @@
   #undef  CTRL_MOD_REQ
   #define CTRL_MOD_REQ            VLT_MODE  // HOVERCAR works best in TORQUE Mode. VOLTAGE mode is preffered when freewheeling is not desired when throttle is released.
   #define CONTROL_ADC             0         // use ADC as input. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART2, FEEDBACK_SERIAL_USART2, DEBUG_SERIAL_USART2!
-  #define SIDEBOARD_SERIAL_USART3 1         // Rx from right sensor board: to use photosensors as buttons. Number indicates priority for dual-input. Comment-out if sideboard is not used!
-  #define FEEDBACK_SERIAL_USART3            // Tx to   right sensor board: for LED battery indication. Comment-out if sideboard is not used!
+  //#define SIDEBOARD_SERIAL_USART3 1         // Rx from right sensor board: to use photosensors as buttons. Number indicates priority for dual-input. Comment-out if sideboard is not used!
+  //#define FEEDBACK_SERIAL_USART3            // Tx to   right sensor board: for LED battery indication. Comment-out if sideboard is not used!
 
   // Ako nema sideboard inpute, onda po defaultu idi na Torque mode, i FieldWeakening enable
   #if defined SIDEBOARD_SERIAL_USART3 && SIDEBOARD_SERIAL_USART3 == 0
@@ -518,7 +518,7 @@
   #define AUX_INPUT1              2, -1000, 0, 1000, 0  // Sideboard Steer    TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
   #define AUX_INPUT2              2, -1000, 0, 1000, 0  // Sideboard Speed    TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
 
-  #define SPEED_COEFFICIENT       16384     // 1.0f
+  #define SPEED_COEFFICIENT       10000   // Defaultno bilo: 16384     // 1.0f
   #define STEER_COEFFICIENT       8192      // 0.5f Only active in Sideboard input
   // #define ADC_ALTERNATE_CONNECT             // use to swap ADC inputs
   // #define INVERT_R_DIRECTION                // Invert rotation of right motor
@@ -536,13 +536,13 @@
   #ifdef MULTI_MODE_DRIVE
       // BABY MODE:     Power ON + Brake [released] + Throttle [released or pressed]
       #define MULTI_MODE_DRIVE_M1_MAX   500 // ADJUSTED
-      #define MULTI_MODE_DRIVE_M1_RATE  300
+      #define MULTI_MODE_DRIVE_M1_RATE  150
       #define MULTI_MODE_M1_I_MOT_MAX   8
       #define MULTI_MODE_M1_N_MOT_MAX   170
 
       // INTERMEDIATE MODE: Power ON + Brake [pressed] + Throttle [released]
       #define MULTI_MODE_DRIVE_M2_MAX   750 // ADJUSTED
-      #define MULTI_MODE_DRIVE_M2_RATE  350
+      #define MULTI_MODE_DRIVE_M2_RATE  300
       #define MULTI_MODE_M2_I_MOT_MAX   10
       #define MULTI_MODE_M2_N_MOT_MAX   (N_MOT_MAX/3)
 
