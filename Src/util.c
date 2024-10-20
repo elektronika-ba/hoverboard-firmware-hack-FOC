@@ -1412,7 +1412,7 @@ void utilTraxBooster(uint8_t enable_boost) {
         	rtP_Right.b_fieldWeakEna = 1;
         	Input_Lim_Init();
 
-        	beepShortMany(5, 1);
+        	beepShortMany(3, 1);
 		
         	#if defined(DEBUG_SERIAL_USART2) || defined(DEBUG_SERIAL_USART3)
 	        	printf("-- Trax Boost ON --\r\n");
@@ -1427,8 +1427,6 @@ void utilTraxBooster(uint8_t enable_boost) {
         	rtP_Left.b_fieldWeakEna  = 0; 
         	rtP_Right.b_fieldWeakEna = 0;
         	Input_Lim_Init();
-
-		beepShortMany(5, -1);
 			
 	        #if defined(DEBUG_SERIAL_USART2) || defined(DEBUG_SERIAL_USART3)
         		printf("-- Trax Boost OFF --\r\n");
