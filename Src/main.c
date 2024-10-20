@@ -126,7 +126,7 @@ int16_t cmdR;                    // global variable for Right Command
 	  static uint8_t trax_backup_drive_mode;
 	  static uint16_t trax_backup_max_speed;
 	  uint16_t trax_backup_rate;
-	  int16_T trax_bacup_n_max;
+	  int16_T trax_backup_n_max;
 	  int16_T trax_backup_i_max;
   #endif
 #endif
@@ -361,7 +361,7 @@ int main(void) {
 		trax_backup_drive_mode = drive_mode;
 		trax_backup_max_speed = max_speed;
 		trax_backup_rate = rate;
-		trax_bacup_n_max = rtP_Left.n_max;
+		trax_backup_n_max = rtP_Left.n_max;
 		trax_backup_i_max = rtP_Left.i_max;
 		
 		// set M1 values
@@ -533,13 +533,13 @@ int main(void) {
 		if(speedAvg >= trax_switch_enable_above_speed && !trax_switch_activated)
 		{
 			trax_switch_activated = 1;
-			utilTraxSwitch(1);
+			utilTraxBooster(1);
 		}
 		// close to standstill - disable booster
 		else if(speedAvg <= 60 && trax_switch_activated)
 		{
 			trax_switch_activated = 0;
-			utilTraxSwitch(0);
+			utilTraxBooster(0);
 		}
 	}
     #endif
