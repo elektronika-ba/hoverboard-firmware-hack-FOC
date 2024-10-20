@@ -504,13 +504,13 @@
   //#define SIDEBOARD_SERIAL_USART3 1         // Rx from right sensor board: to use photosensors as buttons. Number indicates priority for dual-input. Comment-out if sideboard is not used!
   //#define FEEDBACK_SERIAL_USART3            // Tx to   right sensor board: for LED battery indication. Comment-out if sideboard is not used!
 
-  // Ako nema sideboard inpute, onda po defaultu idi na Torque mode, i FieldWeakening enable
+  /*// Ako nema sideboard inpute, onda po defaultu idi na Torque mode, i FieldWeakening enable
   #if defined SIDEBOARD_SERIAL_USART3 && SIDEBOARD_SERIAL_USART3 == 0
     #undef  CTRL_MOD_REQ
     #define CTRL_MOD_REQ            TRQ_MODE
     #undef  FIELD_WEAK_ENA
     #define FIELD_WEAK_ENA  1
-  #endif
+  #endif*/
 
   #define DUAL_INPUTS                       // ADC*(Primary) + Sideboard_R(Auxiliary). Uncomment this to use Dual-inputs
   #define PRI_INPUT1              1,  1000, 0, 2500, 0  // Pedal Brake        TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
@@ -518,7 +518,7 @@
   #define AUX_INPUT1              2, -1000, 0, 1000, 0  // Sideboard Steer    TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
   #define AUX_INPUT2              2, -1000, 0, 1000, 0  // Sideboard Speed    TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
 
-  #define SPEED_COEFFICIENT       10000   // Defaultno bilo: 16384     // 1.0f
+  #define SPEED_COEFFICIENT       16384     // 1.0f
   #define STEER_COEFFICIENT       8192      // 0.5f Only active in Sideboard input
   // #define ADC_ALTERNATE_CONNECT             // use to swap ADC inputs
   // #define INVERT_R_DIRECTION                // Invert rotation of right motor
@@ -547,7 +547,7 @@
       #define MULTI_MODE_M2_N_MOT_MAX   (N_MOT_MAX/3)
 
       // ADVANCED MODE:    Power ON + Brake [pressed] + Throttle [pressed]
-      #define MULTI_MODE_DRIVE_M3_MAX   1000
+      #define MULTI_MODE_DRIVE_M3_MAX   1200
       #define MULTI_MODE_DRIVE_M3_RATE  450
       #define MULTI_MODE_M3_I_MOT_MAX   I_MOT_MAX
       #define MULTI_MODE_M3_N_MOT_MAX   N_MOT_MAX
