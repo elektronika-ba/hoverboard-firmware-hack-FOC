@@ -1424,8 +1424,8 @@ void utilTraxBooster(uint8_t enable_boost) {
 		ctrlModReqRaw         = VLT_MODE;
 
 		// field weakening enable
-        	rtP_Left.b_fieldWeakEna  = 1; 
-        	rtP_Right.b_fieldWeakEna = 1;
+        	rtP_Left.b_fieldWeakEna  = 0; 
+        	rtP_Right.b_fieldWeakEna = 0;
         	Input_Lim_Init();
 
 		beepShortMany(5, -1);
