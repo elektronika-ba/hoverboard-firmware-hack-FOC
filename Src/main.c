@@ -118,8 +118,17 @@ int16_t cmdR;                    // global variable for Right Command
 //------------------------------------------------------------------------
 
 #if defined(TRAX_SWITCH)
-  uint16_t trax_time_to_switch_ms = TRAX_SWITCH_AFTER_MS;
-  uint8_t trax_switch_done = 0;
+  float trax_switch_enable_above_speed = 0.0;
+  uint8_t trax_switch_activated = 0;
+
+  #ifdef TRAX_REVERSE_M1_MODE
+	  uint8_t trax_reverse_speed_limited;
+	  static uint8_t trax_backup_drive_mode;
+	  static uint16_t trax_backup_max_speed;
+	  uint16_t trax_backup_rate;
+	  int16_T trax_bacup_n_max;
+	  int16_T trax_backup_i_max;
+  #endif
 #endif
 
 		
@@ -242,6 +251,10 @@ int main(void) {
     }
 
     printf("Drive mode %i selected: max_speed:%i acc_rate:%i \r\n", drive_mode, max_speed, rate);
+
+    #ifdef TRAX_SWITCH
+	trax_switch_enable_above_speed = max_speed * TRAX_SWITCH_BOOST_ABOVE;
+    #endif
   #endif
 
   // Loop until button is released
@@ -258,10 +271,6 @@ int main(void) {
   while(1) {
     if (buzzerTimer - buzzerTimer_prev > 16*DELAY_IN_MAIN_LOOP) {   // 1 ms = 16 ticks buzzerTimer
 
-    #if defined(TRAX_SWITCH)
-        if(trax_time_to_switch_ms > 0) trax_time_to_switch_ms--;
-    #endif
-	    
     readCommand();                        // Read Command: input1[inIdx].cmd, input2[inIdx].cmd
     calcAvgSpeed();                       // Calculate average measured speed: speedAvg, speedAvgAbs
 
@@ -341,6 +350,39 @@ int main(void) {
         if (speed >= max_speed) {
           speed = max_speed;
         }
+
+	#ifdef TRAX_REVERSE_M1_MODE
+	// for backwards driving limit speed to M1
+	if(speedAvg < 0 && !trax_reverse_speed_limited)
+	{
+		trax_reverse_speed_limited = 1;
+
+		// backup current drive mode
+		trax_backup_drive_mode = drive_mode;
+		trax_backup_max_speed = max_speed;
+		trax_backup_rate = rate;
+		trax_bacup_n_max = rtP_Left.n_max;
+		trax_backup_i_max = rtP_Left.i_max;
+		
+		// set M1 values
+	      	drive_mode = 0;
+	      	max_speed = MULTI_MODE_DRIVE_M1_MAX;
+	      	rate = MULTI_MODE_DRIVE_M1_RATE;
+	      	rtP_Left.n_max = rtP_Right.n_max = MULTI_MODE_M1_N_MOT_MAX << 4;
+	      	rtP_Left.i_max = rtP_Right.i_max = (MULTI_MODE_M1_I_MOT_MAX * A2BIT_CONV) << 4;
+	}
+	else if(speedAvg >= 60 && trax_reverse_speed_limited) {
+		trax_reverse_speed_limited = 0;
+
+		// restore driving values before limitation
+	      	drive_mode = trax_backup_drive_mode;
+	      	max_speed = trax_backup_max_speed;
+	      	rate = trax_backup_rate;
+	      	rtP_Left.n_max = rtP_Right.n_max = trax_backup_n_max;
+	      	rtP_Left.i_max = rtP_Right.i_max = trax_backup_i_max;
+	}
+	#endif
+	      
         #endif
 
         if (!MultipleTapBrake.b_multipleTap) {  // Check driving direction
@@ -484,13 +526,21 @@ int main(void) {
       sideboardLeds(&sideboard_leds_R);
     #endif
 
-    // ####### TRAX RUNTIME SWITCHER #######
+    // ####### TRAX RUNTIME SWITCHER - BOOSTER #######
     #if defined(TRAX_SWITCH)
-	if(trax_time_to_switch_ms == 0 && !trax_switch_done)
-	{
-		trax_switch_done = 1;
-		
-		utilTraxSwitch();
+	if(trax_switch_enable_above_speed > 0.0) {
+		// speed after set point - enable booster
+		if(speedAvg >= trax_switch_enable_above_speed && !trax_switch_activated)
+		{
+			trax_switch_activated = 1;
+			utilTraxSwitch(1);
+		}
+		// close to standstill - disable booster
+		else if(speedAvg <= 60 && trax_switch_activated)
+		{
+			trax_switch_activated = 0;
+			utilTraxSwitch(0);
+		}
 	}
     #endif
 
