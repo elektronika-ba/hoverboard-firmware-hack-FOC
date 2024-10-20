@@ -1404,7 +1404,7 @@ void sideboardLeds(uint8_t *leds) {
 void utilTraxSwitch() {
 		// torque mode
 		rtP_Left.z_ctrlTypSel = rtP_Right.z_ctrlTypSel = FOC_CTRL;
-		ctrlModReq         = TRQ_MODE;
+		ctrlModReqRaw         = TRQ_MODE;
 
 		// field weakening enable
         	rtP_Left.b_fieldWeakEna  = 1; 
