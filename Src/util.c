@@ -1397,6 +1397,29 @@ void sideboardLeds(uint8_t *leds) {
 }
 
 /*
+ * Trax switcher
+ * Switch to Torque mode and enable Field Weakening at runtime.
+ */
+#if defined(TRAX_SWITCH)
+void utilTraxSwitch() {
+		// torque mode
+		rtP_Left.z_ctrlTypSel = rtP_Right.z_ctrlTypSel = FOC_CTRL;
+		ctrlModReq         = TRQ_MODE;
+
+		// field weakening enable
+        	rtP_Left.b_fieldWeakEna  = 1; 
+        	rtP_Right.b_fieldWeakEna = 1;
+        	Input_Lim_Init();
+
+        	beepShort(5);
+		
+	        #if defined(DEBUG_SERIAL_USART2) || defined(DEBUG_SERIAL_USART3)
+	        	printf("-- Trax Switcher Executed --\r\n");
+	        #endif
+}
+#endif
+
+/*
  * Sideboard Sensor Handling
  * This function manages the sideboards photo sensors.
  * In non-hoverboard variants, the sensors are used as push buttons.
