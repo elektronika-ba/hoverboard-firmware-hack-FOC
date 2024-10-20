@@ -118,7 +118,7 @@ int16_t cmdR;                    // global variable for Right Command
 //------------------------------------------------------------------------
 
 #if defined(TRAX_SWITCH)
-  uint16_t trax_time_to_switch_ms == TRAX_SWITCH_AFTER_MS;
+  uint16_t trax_time_to_switch_ms = TRAX_SWITCH_AFTER_MS;
   uint8_t trax_switch_done = 0;
 #endif
 
@@ -486,13 +486,13 @@ int main(void) {
 
     // ####### TRAX RUNTIME SWITCHER #######
     #if defined(TRAX_SWITCH)
-	if(trax_time_to_switch == 0 && !trax_switch_done)
+	if(trax_time_to_switch_ms == 0 && !trax_switch_done)
 	{
 		trax_switch_done = 1;
 
 		// torque mode
 		rtP_Left.z_ctrlTypSel = rtP_Right.z_ctrlTypSel = FOC_CTRL;
-		ctrlModReqRaw         = TRQ_MODE;
+		ctrlModReq         = TRQ_MODE;
 
 		// field weakening enable
         	rtP_Left.b_fieldWeakEna  = 1; 
