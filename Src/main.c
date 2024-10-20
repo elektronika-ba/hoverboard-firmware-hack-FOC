@@ -116,6 +116,13 @@ int16_t cmdR;                    // global variable for Right Command
 //------------------------------------------------------------------------
 // Local variables
 //------------------------------------------------------------------------
+
+#if defined(TRAX_SWITCH)
+  uint16_t trax_time_to_switch_ms == TRAX_SWITCH_AFTER_MS;
+  uint8_t trax_switch_done = 0;
+#endif
+
+		
 #if defined(FEEDBACK_SERIAL_USART2) || defined(FEEDBACK_SERIAL_USART3)
 typedef struct{
   uint16_t  start;
@@ -251,6 +258,10 @@ int main(void) {
   while(1) {
     if (buzzerTimer - buzzerTimer_prev > 16*DELAY_IN_MAIN_LOOP) {   // 1 ms = 16 ticks buzzerTimer
 
+    #if defined(TRAX_SWITCH)
+        if(trax_time_to_switch_ms > 0) trax_time_to_switch_ms--;
+    #endif
+	    
     readCommand();                        // Read Command: input1[inIdx].cmd, input2[inIdx].cmd
     calcAvgSpeed();                       // Calculate average measured speed: speedAvg, speedAvgAbs
 
@@ -472,7 +483,29 @@ int main(void) {
     #if defined(FEEDBACK_SERIAL_USART3)
       sideboardLeds(&sideboard_leds_R);
     #endif
-    
+
+    // ####### TRAX RUNTIME SWITCHER #######
+    #if defined(TRAX_SWITCH)
+	if(trax_time_to_switch == 0 && !trax_switch_done)
+	{
+		trax_switch_done = 1;
+
+		// torque mode
+		rtP_Left.z_ctrlTypSel = rtP_Right.z_ctrlTypSel = FOC_CTRL;
+		ctrlModReqRaw         = TRQ_MODE;
+
+		// field weakening enable
+        	rtP_Left.b_fieldWeakEna  = 1; 
+        	rtP_Right.b_fieldWeakEna = 1;
+        	Input_Lim_Init();
+
+        	beepShort(5);
+		
+	        #if defined(DEBUG_SERIAL_USART2) || defined(DEBUG_SERIAL_USART3)
+	        	printf("-- Trax Switcher Executed --\r\n");
+	        #endif
+	}
+    #endif
 
     // ####### CALC BOARD TEMPERATURE #######
     filtLowPass32(adc_buffer.temp, TEMP_FILT_COEF, &board_temp_adcFixdt);
