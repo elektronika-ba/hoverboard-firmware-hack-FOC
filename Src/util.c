@@ -1401,7 +1401,8 @@ void sideboardLeds(uint8_t *leds) {
  * Switch to Torque mode and enable Field Weakening at runtime.
  */
 #if defined(TRAX_SWITCH)
-void utilTraxSwitch() {
+void utilTraxBooster(uint8_t enable_boost) {
+	if(enable_boost) {
 		// torque mode
 		rtP_Left.z_ctrlTypSel = rtP_Right.z_ctrlTypSel = FOC_CTRL;
 		ctrlModReqRaw         = TRQ_MODE;
@@ -1411,11 +1412,28 @@ void utilTraxSwitch() {
         	rtP_Right.b_fieldWeakEna = 1;
         	Input_Lim_Init();
 
-        	beepShort(5);
+        	beepShortMany(5, 1);
 		
-	        #if defined(DEBUG_SERIAL_USART2) || defined(DEBUG_SERIAL_USART3)
-	        	printf("-- Trax Switcher Executed --\r\n");
+        	#if defined(DEBUG_SERIAL_USART2) || defined(DEBUG_SERIAL_USART3)
+	        	printf("-- Trax Boost ON --\r\n");
 	        #endif
+	}
+	else {
+		// volt mode
+		rtP_Left.z_ctrlTypSel = rtP_Right.z_ctrlTypSel = FOC_CTRL;
+		ctrlModReqRaw         = VLT_MODE;
+
+		// field weakening enable
+        	rtP_Left.b_fieldWeakEna  = 1; 
+        	rtP_Right.b_fieldWeakEna = 1;
+        	Input_Lim_Init();
+
+		beepShortMany(5, -1);
+			
+	        #if defined(DEBUG_SERIAL_USART2) || defined(DEBUG_SERIAL_USART3)
+        		printf("-- Trax Boost OFF --\r\n");
+        	#endif
+	}
 }
 #endif
 
