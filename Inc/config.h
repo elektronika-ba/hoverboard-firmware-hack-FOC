@@ -504,16 +504,10 @@
   //#define SIDEBOARD_SERIAL_USART3 1         // Rx from right sensor board: to use photosensors as buttons. Number indicates priority for dual-input. Comment-out if sideboard is not used!
   //#define FEEDBACK_SERIAL_USART3            // Tx to   right sensor board: for LED battery indication. Comment-out if sideboard is not used!
 
-  #define TRAX_SWITCH 1               // switch to torque mode and enable field weakening at runtime
-  #define TRAX_SWITCH_AFTER_MS 5000   // after this many [ms]
-
-  /*// Ako nema sideboard inpute, onda po defaultu idi na Torque mode, i FieldWeakening enable
-  #if defined SIDEBOARD_SERIAL_USART3 && SIDEBOARD_SERIAL_USART3 == 0
-    #undef  CTRL_MOD_REQ
-    #define CTRL_MOD_REQ            TRQ_MODE
-    #undef  FIELD_WEAK_ENA
-    #define FIELD_WEAK_ENA  1
-  #endif*/
+  // Note: for TRAX_SWITCH booster to be active, MULTI_MODE_DRIVE also needs to be enabled
+  #define TRAX_SWITCH                   1     // switch to torque mode and enable field weakening at runtime
+  #define TRAX_SWITCH_BOOST_ABOVE      (0.8) // [0.1 - 1.0] after reaching 80% (0.8) of max speed enable the booster. will be disabled on full stop
+  #define TRAX_REVERSE_M1_MODE          1     // when in reverse limit max speed to M1 mode
 
   #define DUAL_INPUTS                       // ADC*(Primary) + Sideboard_R(Auxiliary). Uncomment this to use Dual-inputs
   #define PRI_INPUT1              1,  1000, 0, 2500, 0  // Pedal Brake        TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
@@ -544,11 +538,12 @@
       #define MULTI_MODE_M1_N_MOT_MAX   170
 
       // INTERMEDIATE MODE: Power ON + Brake [pressed] + Throttle [released]
-      #define MULTI_MODE_DRIVE_M2_MAX   750 // ADJUSTED
-      #define MULTI_MODE_DRIVE_M2_RATE  300
-      #define MULTI_MODE_M2_I_MOT_MAX   10
-      #define MULTI_MODE_M2_N_MOT_MAX   (N_MOT_MAX/3)
+      #define MULTI_MODE_DRIVE_M2_MAX   1200 // 750
+      #define MULTI_MODE_DRIVE_M2_RATE  450 // 300
+      #define MULTI_MODE_M2_I_MOT_MAX   I_MOT_MAX // 10
+      #define MULTI_MODE_M2_N_MOT_MAX   N_MOT_MAX // (N_MOT_MAX/3)
 
+      // MOVED TO M2 MODE, SO WE ONLY HAVE BABY MODE + FAST MODE
       // ADVANCED MODE:    Power ON + Brake [pressed] + Throttle [pressed]
       #define MULTI_MODE_DRIVE_M3_MAX   1200
       #define MULTI_MODE_DRIVE_M3_RATE  450
