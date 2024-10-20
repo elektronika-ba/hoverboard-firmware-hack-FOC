@@ -489,21 +489,8 @@ int main(void) {
 	if(trax_time_to_switch_ms == 0 && !trax_switch_done)
 	{
 		trax_switch_done = 1;
-
-		// torque mode
-		rtP_Left.z_ctrlTypSel = rtP_Right.z_ctrlTypSel = FOC_CTRL;
-		ctrlModReq         = TRQ_MODE;
-
-		// field weakening enable
-        	rtP_Left.b_fieldWeakEna  = 1; 
-        	rtP_Right.b_fieldWeakEna = 1;
-        	Input_Lim_Init();
-
-        	beepShort(5);
 		
-	        #if defined(DEBUG_SERIAL_USART2) || defined(DEBUG_SERIAL_USART3)
-	        	printf("-- Trax Switcher Executed --\r\n");
-	        #endif
+		utilTraxSwitch();
 	}
     #endif
 
