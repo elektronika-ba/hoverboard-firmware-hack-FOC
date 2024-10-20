@@ -504,6 +504,9 @@
   //#define SIDEBOARD_SERIAL_USART3 1         // Rx from right sensor board: to use photosensors as buttons. Number indicates priority for dual-input. Comment-out if sideboard is not used!
   //#define FEEDBACK_SERIAL_USART3            // Tx to   right sensor board: for LED battery indication. Comment-out if sideboard is not used!
 
+  #define TRAX_SWITCH 1               // switch to torque mode and enable field weakening at runtime
+  #define TRAX_SWITCH_AFTER_MS 5000   // after this many [ms]
+
   /*// Ako nema sideboard inpute, onda po defaultu idi na Torque mode, i FieldWeakening enable
   #if defined SIDEBOARD_SERIAL_USART3 && SIDEBOARD_SERIAL_USART3 == 0
     #undef  CTRL_MOD_REQ
