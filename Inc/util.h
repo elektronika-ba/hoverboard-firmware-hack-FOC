@@ -105,7 +105,7 @@ void usart_process_sideboard(SerialSideboard *Sideboard_in, SerialSideboard *Sid
 #endif
 
 #if defined(TRAX_SWITCH)
-void	utilTraxSwitch(void);
+void	utilTraxBooster(uint8_t);
 #endif
 
 // Sideboard functions
